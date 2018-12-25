@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         bootstrap="vendor/autoload.php"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>./src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+        <log type="coverage-html" target="./storage/coverage/html"/>
+    </logging>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <!--<env name="DB_DATABASE" value=":memory:"/>-->
+        <env name="DB_DATABASE" value="test"/>
+        <!--<env name="DB_CONNECTION" value="sqlite"/>-->
+        <env name="DB_CONNECTION" value="pgsql"/>
+        <env name="DB_USERNAME" value="efureev"/>
+    </php>
+</phpunit>

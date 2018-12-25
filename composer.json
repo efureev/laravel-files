@@ -1,0 +1,56 @@
+{
+  "version": "0.0.1",
+  "name": "feugene/laravel-files",
+  "description": "Laravel files model",
+  "keywords": [
+    "laravel",
+    "files"
+  ],
+  "authors": [
+    {
+      "name": "Fureev Eugene",
+      "email": "fureev@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">7.1 <=7.3",
+    "illuminate/database": "~5.6",
+    "ramsey/uuid": "^3.8",
+    "symfony/http-foundation": "~4",
+    "efureev/support": "*"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.2",
+    "avto-dev/dev-tools": "^1.7",
+    "fzaninotto/faker": "^1.8",
+    "phpstan/phpstan": "*",
+    "phpunit/phpunit": "^7.0",
+    "efureev/php-cs-fixer": "*",
+    "laravel/laravel": "*"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Feugene\\Files\\ServiceProvider"
+      ]
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Feugene\\Files\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Feugene\\Files\\Tests\\": "tests/"
+    },
+    "classmap": [
+      "database/factories"
+    ]
+  },
+  "scripts": {
+    "test": "@php ./vendor/bin/phpunit --no-coverage",
+    "test-cover": "@php ./vendor/bin/phpunit --coverage-text",
+    "phpstan": "@php ./vendor/bin/phpstan analyze --ansi --level=max ./src"
+  }
+}
