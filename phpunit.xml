@@ -28,6 +28,6 @@
         <env name="DB_DATABASE" value="test"/>
         <!--<env name="DB_CONNECTION" value="sqlite"/>-->
         <env name="DB_CONNECTION" value="pgsql"/>
-        <env name="DB_USERNAME" value="efureev"/>
+        <env name="DB_USERNAME" value="postgres"/>
     </php>
 </phpunit>
