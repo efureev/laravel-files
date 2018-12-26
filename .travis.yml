@@ -18,7 +18,7 @@ services:
   - docker
 
 before_install:
-  - docker run --name postgres -p 127.0.0.1:5432:5432 -e POSTGRES_USER=efureev -e POSTGRES_DB=test -d postgres:${DB_VERSION}
+  - docker run --name postgres -p 127.0.0.1:15432:5432 -e POSTGRES_USER=efureev -e POSTGRES_DB=test -d postgres:${DB_VERSION}
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
