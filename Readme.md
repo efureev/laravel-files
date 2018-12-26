@@ -1,6 +1,6 @@
-[![Latest Stable Version](https://poser.pugx.org/efureev/laravel-files/v/stable)](https://packagist.org/packages/efureev/laravel-files)
-[![Total Downloads](https://poser.pugx.org/efureev/laravel-files/downloads)](https://packagist.org/packages/efureev/laravel-files)
-[![Latest Unstable Version](https://poser.pugx.org/efureev/laravel-files/v/unstable)](https://packagist.org/packages/efureev/laravel-files)
+[![Latest Stable Version](https://poser.pugx.org/feugene/laravel-files/v/stable)](https://packagist.org/packages/feugene/laravel-files)
+[![Total Downloads](https://poser.pugx.org/feugene/laravel-files/downloads)](https://packagist.org/packages/feugene/laravel-files)
+[![Latest Unstable Version](https://poser.pugx.org/feugene/laravel-files/v/unstable)](https://packagist.org/packages/feugene/laravel-files)
 
 [![Build Status](https://travis-ci.org/efureev/laravel-files.svg?branch=master)](https://travis-ci.org/efureev/laravel-files)
 
@@ -12,7 +12,7 @@ Add-on to file model for Laravel. Implements work with native files.
 
 
 ## Install
-- `composer require efureev/laravel-files`
+- `composer require feugene/laravel-files`
 
 ## Examples
 - Add ServiceProvider into your app: `config/app.php` (section: `providers`)
