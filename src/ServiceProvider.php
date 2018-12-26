@@ -5,6 +5,7 @@ namespace Feugene\Files;
 use Feugene\Files\Models\File;
 use Feugene\Files\Observers\FileObserver;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
@@ -17,7 +18,6 @@ class ServiceProvider extends BaseServiceProvider
 
     public function boot(): void
     {
-
         $this->app->config->set('files', require self::path('config/files.php'));
 
 
@@ -29,10 +29,18 @@ class ServiceProvider extends BaseServiceProvider
 
         File::observe(FileObserver::class);
 
+        $this->registerPolicies();
     }
 
     private static function path($path)
     {
         return __DIR__ . '/../' . ltrim($path, '/');
+    }
+
+    public function registerPolicies()
+    {
+        foreach (config('files', []) as $value) {
+            Gate::policy(File::class, $value);
+        }
     }
 }

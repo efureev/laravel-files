@@ -57,7 +57,7 @@ trait BaseFileApply
      */
     protected function getDriver(): string
     {
-        return !empty($this->driver) ? $this->driver : config('files.driverDefault', 'local');
+        return !empty($this->driver) ? $this->driver : config('filesystems.driverDefault', 'local');
     }
 
     /**

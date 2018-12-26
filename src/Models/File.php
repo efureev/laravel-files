@@ -34,6 +34,7 @@ class File extends Model
     protected $hidden = [
         'parent',
     ];
+    
     protected $fillable = [
         'path',
         'driver',
