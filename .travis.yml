@@ -1,20 +1,16 @@
 language: php
 php:
-  - '7.0'
   - '7.1'
   - '7.2'
   - '7.3'
 
 env:
-  #  - DB=mysql
   - DB=postgres DB_VERSION=9.6
   - DB=postgres DB_VERSION=10
   - DB=postgres DB_VERSION=11
 
 
 services:
-  #  - mysql
-  #  - postgresql
   - docker
 
 before_install:
