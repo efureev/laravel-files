@@ -3,11 +3,22 @@ php:
   - '7.1'
   - '7.2'
   - '7.3'
+  - nightly
+
+env:
+  #  - DB=mysql
+  - DB=postgres DB_VERSION=9.6
+  - DB=postgres DB_VERSION=10
+  - DB=postgres DB_VERSION=11
+
 
 services:
-  - postgresql
+  #  - mysql
+  #  - postgresql
+  - docker
 
 before_install:
+  - docker run --name postgres-${DB_VERSION} -p 5432:5432 -e POSTGRES_USER=efureev -e POSTGRES_DB=test -d postgres
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
@@ -24,3 +35,7 @@ after_script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+cache:
+  directories:
+    - $HOME/.composer
