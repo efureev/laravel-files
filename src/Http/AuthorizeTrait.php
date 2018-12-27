@@ -2,6 +2,7 @@
 
 namespace Feugene\Files\Http;
 
+use Feugene\Files\Models\File;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 trait AuthorizeTrait
@@ -16,7 +17,7 @@ trait AuthorizeTrait
      */
     protected function authorizeAction(string $action, array $params = [])
     {
-        $this->authorize($action, $params);
+        $this->authorize($action, [File::class, $params]);
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace Feugene\Files;
 
+use Feugene\Files\Contracts\UploadService;
 use Feugene\Files\Models\File;
 use Feugene\Files\Observers\FileObserver;
 use Illuminate\Database\Eloquent\Factory;
@@ -13,7 +14,8 @@ class ServiceProvider extends BaseServiceProvider
 
     public function register(): void
     {
-
+        $this->app->singleton(UploadService::class, \Feugene\Files\Services\UploadService::class);
+//        $this->app->alias(UploadService::class, 'upload');
     }
 
     public function boot(): void
