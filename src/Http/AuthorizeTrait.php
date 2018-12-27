@@ -14,6 +14,7 @@ trait AuthorizeTrait
      * @param array  $params
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @codeCoverageIgnore
      */
     protected function authorizeAction(string $action, array $params = [])
     {

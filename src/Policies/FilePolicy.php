@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
  * Class FilePolicy
  *
  * @package Feugene\Files\Policies
+ * @codeCoverageIgnore
  */
 class FilePolicy
 {

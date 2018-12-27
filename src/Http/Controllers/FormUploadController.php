@@ -8,6 +8,11 @@ use Feugene\Files\Models\File;
 use Feugene\Files\Services\AfterModelAction;
 use Illuminate\Routing\Controller as BaseController;
 
+/**
+ * Class FormUploadController
+ *
+ * @package Feugene\Files\Http\Controllers
+ */
 class FormUploadController extends BaseController
 {
     use AuthorizeTrait;
@@ -16,6 +21,7 @@ class FormUploadController extends BaseController
      * @return array
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Exception
+     * @codeCoverageIgnore
      */
     public function upload()
     {
@@ -34,6 +40,7 @@ class FormUploadController extends BaseController
      * @param bool                                 $status
      *
      * @return array
+     * @codeCoverageIgnore
      */
     protected function getResponse($data = [], bool $status = true)
     {
@@ -49,6 +56,7 @@ class FormUploadController extends BaseController
      *
      * @return array|\Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @codeCoverageIgnore
      */
     public function delete(string $id)
     {

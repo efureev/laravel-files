@@ -27,7 +27,14 @@ trait VerifyTrait
     public function verifyExtensions(Collection $files): void
     {
         $files->map(function (File $file) {
-            if (!$this->allowFileType($ext = $file->getExtension())) {
+
+            if ($file instanceof \Illuminate\Http\Testing\File) {
+                $ext = pathinfo($file->name, PATHINFO_EXTENSION);
+            } else {
+                $ext = $file->getExtension();
+            }
+
+            if (!$this->allowFileType($ext)) {
                 throw new NotAllowFileTypeToUploadException($ext);
             }
         });

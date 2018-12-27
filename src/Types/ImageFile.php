@@ -6,6 +6,7 @@ namespace Feugene\Files\Types;
  * Class ImageFile
  *
  * @package Feugene\Files\Types
+ * @codeCoverageIgnore
  */
 class ImageFile extends BaseFile
 {
