@@ -4,17 +4,13 @@ namespace Feugene\Files\Http\Controllers;
 
 use Feugene\Files\Contracts\UploadService;
 use Feugene\Files\Http\AuthorizeTrait;
-use Feugene\Files\Http\UploadTrait;
-use Feugene\Files\Http\VerifyTrait;
 use Feugene\Files\Models\File;
 use Feugene\Files\Services\AfterModelAction;
-use Feugene\Files\Services\BeforeBaseAction;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
 class FormUploadController extends BaseController
 {
-    use AuthorizeTrait, UploadTrait, VerifyTrait, ValidatesRequests;
+    use AuthorizeTrait;
 
     /**
      * @return array
@@ -23,10 +19,9 @@ class FormUploadController extends BaseController
      */
     public function upload()
     {
-        $this->authorizeAction(__METHOD__);
+        $this->authorizeAction('upload');
 
         $list = app(UploadService::class)
-            ->setAction(BeforeBaseAction::class, 'before')
             ->setAfterAction(AfterModelAction::class)
             ->upload();
 
@@ -57,11 +52,10 @@ class FormUploadController extends BaseController
      */
     public function delete(string $id)
     {
-        $this->authorizeAction(__METHOD__);
+        $this->authorizeAction('delete');
 
         /** @var File $file */
         if ($file = File::find($id)) {
-
             return $this->getResponse($file, $file->delete());
         }
 

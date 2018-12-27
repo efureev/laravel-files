@@ -21,6 +21,11 @@ trait UploadTrait
     protected $driver = 'local';
 
     /**
+     * @var null|array
+     */
+    protected $uploadFiles;
+
+    /**
      * @var bool
      */
     public $uniqueFileName = true;
@@ -28,15 +33,39 @@ trait UploadTrait
     /**
      * @return \Illuminate\Support\Collection|UploadedFile[]
      */
-    protected static function getUploadedFiles(): Collection
+    protected function getUploadedFiles(): Collection
     {
-        $files = request()->file('file');
+        $files = $this->getUploadedFilesFromSource();
 
         if ($files instanceof UploadedFile) {
             $files = [$files];
         }
 
         return collect($files);
+    }
+
+    /**
+     * @return array|\Illuminate\Http\UploadedFile|null
+     */
+    protected function getUploadedFilesFromSource()
+    {
+        if ($this->uploadFiles === null) {
+            $this->uploadFiles = request()->file('file');
+        }
+
+        return $this->uploadFiles;
+    }
+
+    /**
+     * @param UploadedFile|array $files
+     *
+     * @return $this
+     */
+    public function setUploadedFiles($files)
+    {
+        $this->uploadFiles = $files;
+
+        return $this;
     }
 
     /**
@@ -61,6 +90,14 @@ trait UploadTrait
         $this->path = $path;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return (string)$this->path;
     }
 
     /**
