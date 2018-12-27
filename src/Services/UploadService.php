@@ -4,7 +4,7 @@ namespace Feugene\Files\Services;
 
 use Feugene\Files\Contracts\AfterUploadAction;
 use Feugene\Files\Contracts\BeforeUploadAction;
-use Feugene\Files\Contracts\UploadService as UploadServiceContracts;
+use Feugene\Files\Contracts\UploadService as UploadServiceContract;
 use Feugene\Files\Exceptions\MissingFilesToUploadException;
 use Feugene\Files\Http\UploadTrait;
 use Feugene\Files\Http\VerifyTrait;
@@ -13,7 +13,12 @@ use Illuminate\Support\Collection;
 use Php\Support\Exceptions\InvalidParamException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class UploadService implements UploadServiceContracts
+/**
+ * Class UploadService
+ *
+ * @package Feugene\Files\Services
+ */
+class UploadService implements UploadServiceContract
 {
     use UploadTrait, VerifyTrait;
 
@@ -52,8 +57,7 @@ class UploadService implements UploadServiceContracts
 
             $baseFile = $this->uploadFileToFolder($uploadFile);
 
-            $list[] = $this->afterUploadFile($baseFile);
-
+            return $this->afterUploadFile($baseFile);
         })->filter();
     }
 
@@ -90,8 +94,8 @@ class UploadService implements UploadServiceContracts
      */
     private function afterUploadFile(BaseFile $baseFile)
     {
-        if ($this->beforeUploadActions) {
-            foreach ($this->beforeUploadActions as $action) {
+        if ($this->afterUploadActions) {
+            foreach ($this->afterUploadActions as $action) {
                 if ($action instanceof \Closure) {
                     $baseFile = $action($baseFile);
                 } elseif (is_string($action) && class_exists($action)) {
@@ -113,12 +117,12 @@ class UploadService implements UploadServiceContracts
      * @param string|array $actions
      * @param string       $type
      *
-     * @return \Feugene\Files\Services\UploadService
+     * @return \Feugene\Files\Contracts\UploadService
      * @throws \Php\Support\Exceptions\InvalidParamException
      */
-    public function setAction($actions, string $type): self
+    public function setAction($actions, string $type): UploadServiceContract
     {
-        if (is_string($actions)) {
+        if (is_string($actions) || $actions instanceof \Closure) {
             $actions = [$actions];
         } elseif (!is_array($actions)) {
             throw new InvalidParamException('Invalid params $type: must have be "after" or "before"');
@@ -141,9 +145,9 @@ class UploadService implements UploadServiceContracts
     /**
      * @param string|array $actions
      *
-     * @return \Feugene\Files\Services\UploadService
+     * @return \Feugene\Files\Contracts\UploadService
      */
-    public function setBeforeAction($actions): self
+    public function setBeforeAction($actions): UploadServiceContract
     {
         return $this->setAction($actions, 'before');
     }
@@ -151,9 +155,9 @@ class UploadService implements UploadServiceContracts
     /**
      * @param string|array $actions
      *
-     * @return \Feugene\Files\Services\UploadService
+     * @return \Feugene\Files\Contracts\UploadService
      */
-    public function setAfterAction($actions): self
+    public function setAfterAction($actions): UploadServiceContract
     {
         return $this->setAction($actions, 'after');
     }

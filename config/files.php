@@ -1,7 +1,9 @@
 <?php
 
 return [
-    'table'  => 'files',
-    //    'driverDefault' => 'local',
+    'table'  => [
+        'name' => 'files_upload',
+        'id'   => 'uuid',
+    ],
     'policy' => \Feugene\Files\Policies\FilePolicy::class,
 ];

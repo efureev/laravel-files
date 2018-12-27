@@ -6,6 +6,7 @@ namespace Feugene\Files\Contracts;
  * Interface UploadService
  *
  * @package Feugene\Files\Contracts
+ * @mixin \Feugene\Files\Services\UploadService
  */
 interface UploadService
 {

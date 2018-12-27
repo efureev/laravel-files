@@ -9,13 +9,16 @@ use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
+/**
+ * Class ServiceProvider
+ *
+ * @package Feugene\Files
+ */
 class ServiceProvider extends BaseServiceProvider
 {
-
     public function register(): void
     {
         $this->app->singleton(UploadService::class, \Feugene\Files\Services\UploadService::class);
-//        $this->app->alias(UploadService::class, 'upload');
     }
 
     public function boot(): void
@@ -41,7 +44,12 @@ class ServiceProvider extends BaseServiceProvider
 
     public function registerPolicies()
     {
-        foreach (config('files', []) as $value) {
+        $policies = config('files.policy', []);
+        if (is_string($policies)) {
+            $policies = [$policies];
+        }
+
+        foreach ($policies as $value) {
             Gate::policy(File::class, $value);
         }
     }

@@ -24,3 +24,70 @@ Add-on file model for Laravel models. Implements work with native files.
 
 - Run `php artisan migrate` for add table for file 
 
+Only simple upload:
+```php
+public function store()
+{
+    $list = app(UploadService::class)
+        ->upload();
+
+    return [
+        'success' => $list->isNotEmpty(),
+        'files'   => $list,
+    ];
+}
+```
+
+Upload with wrapped file to model via after actions:
+
+```php
+public function store()
+{
+    $list = app(UploadService::class)
+        ->setAfterAction(AfterModelAction::class)
+        ->upload();
+
+    return [
+        'success' => $list->isNotEmpty(),
+        'files'   => $list,
+    ];
+}
+```
+
+
+Upload with wrapped file to custom model and custom path:
+
+```php
+public function store(int $sectionId)
+{
+    /** @var Section $section */
+    $section = Section::findOrFail($sectionId);
+
+    $this->authorize('uploadFile', $section);
+
+    $upload = new Upload($section);
+    $path = $upload->getUploadPath();
+
+    $list = app(UploadService::class)
+        ->setPath($path)
+        ->setAction(BeforeBaseAction::class, 'before')
+        ->setAfterAction(AfterModelAction::class)
+        ->setAfterAction(function ($file) use ($section) {
+            /** @var \Feugene\Files\Models\File $file */
+            
+            return File::create([
+                'section_id' => $section->id,
+                'author_id'  => \Auth::id(),
+                'name'       => $file->getBaseFile()->getFilename(),
+                'file_id'    => $file->getKey()
+            ]);
+        })
+        ->upload();
+
+    return [
+        'success' => $list->isNotEmpty(),
+        'files'   => $list,
+    ];
+}
+```
+

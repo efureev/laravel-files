@@ -11,21 +11,21 @@ use Illuminate\Database\Eloquent\Model;
  * Class File
  *
  * @package Feugene\Files\Models
- * @property \Ramsey\Uuid\Uuid $id
- * @property \Ramsey\Uuid\Uuid $parent_id
- * @property string            $path
- * @property string            $ext
- * @property string            $size
- * @property string            $mime
- * @property string            $driver
- * @property  FileParams       $params
+ * @property \Ramsey\Uuid\Uuid|int $id
+ * @property \Ramsey\Uuid\Uuid|int $parent_id
+ * @property string                $path
+ * @property string                $ext
+ * @property string                $size
+ * @property string                $mime
+ * @property string                $driver
+ * @property  FileParams           $params
  * @mixin  \Illuminate\Database\Eloquent\Builder
  */
 class File extends Model
 {
     use BaseFileApply;
 
-    protected $keyType = 'string';
+    protected $keyType = 'uuid';
 
     protected $casts = [
         'params' => 'array',
@@ -34,7 +34,7 @@ class File extends Model
     protected $hidden = [
         'parent',
     ];
-    
+
     protected $fillable = [
         'path',
         'driver',
@@ -44,6 +44,25 @@ class File extends Model
         'params',
     ];
 
+    /**
+     * File constructor.
+     *
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        $this->keyType = config('files.table.id', 'uuid');
+        $this->table = config('files.table.name', 'files');
+
+        parent::__construct($attributes);
+    }
+
+
+    /**
+     * @param $value
+     *
+     * @throws \Feugene\Files\Exceptions\MissingFilePathException
+     */
     public function setPathAttribute($value)
     {
         if (empty($value)) {
