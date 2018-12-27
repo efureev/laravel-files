@@ -68,19 +68,20 @@ class UploadService implements UploadServiceContract
      */
     private function beforeUploadFile(UploadedFile $file): UploadedFile
     {
-        if ($this->beforeUploadActions) {
-            foreach ($this->beforeUploadActions as $action) {
-                if ($action instanceof \Closure) {
-                    $file = $action($file);
-                } elseif (is_string($action) && class_exists($action)) {
-                    $cls = new $action;
+        if (!$this->beforeUploadActions || !is_array($this->beforeUploadActions)) {
+            return $file;
+        }
+        foreach ($this->beforeUploadActions as $action) {
+            if ($action instanceof \Closure) {
+                $file = $action($file);
+            } elseif (is_string($action) && class_exists($action)) {
+                $cls = new $action;
 
-                    if (!$cls instanceof BeforeUploadAction) {
-                        throw new InvalidParamException('Invalid instance! Must have ' . BeforeUploadAction::class);
-                    }
-
-                    $file = $cls->handle($file);
+                if (!$cls instanceof BeforeUploadAction) {
+                    throw new InvalidParamException('Invalid instance! Must have ' . BeforeUploadAction::class);
                 }
+
+                $file = $cls->handle($file);
             }
         }
 
@@ -90,23 +91,25 @@ class UploadService implements UploadServiceContract
     /**
      * @param \Feugene\Files\Types\BaseFile $baseFile
      *
-     * @return \Feugene\Files\Models\File|null
+     * @return \Feugene\Files\Models\File|\Feugene\Files\Types\BaseFile|null
      */
     private function afterUploadFile(BaseFile $baseFile)
     {
-        if ($this->afterUploadActions) {
-            foreach ($this->afterUploadActions as $action) {
-                if ($action instanceof \Closure) {
-                    $baseFile = $action($baseFile);
-                } elseif (is_string($action) && class_exists($action)) {
-                    $cls = new $action;
+        if (!$this->afterUploadActions || !is_array($this->afterUploadActions)) {
+            return $baseFile;
+        }
 
-                    if (!$cls instanceof AfterUploadAction) {
-                        throw new InvalidParamException('Invalid instance! Must have ' . AfterUploadAction::class);
-                    }
+        foreach ($this->afterUploadActions as $action) {
+            if ($action instanceof \Closure) {
+                $baseFile = $action($baseFile);
+            } elseif (is_string($action) && class_exists($action)) {
+                $cls = new $action;
 
-                    $baseFile = $cls->handle($baseFile);
+                if (!$cls instanceof AfterUploadAction) {
+                    throw new InvalidParamException('Invalid instance! Must have ' . AfterUploadAction::class);
                 }
+
+                $baseFile = $cls->handle($baseFile);
             }
         }
 
