@@ -27,9 +27,6 @@ class File extends Model
 
     protected $keyType = 'uuid';
 
-    protected $casts = [
-//        'params' => 'array',
-    ];
 
     protected $hidden = [
         'parent',

@@ -2,7 +2,7 @@
 
 return [
     'table'  => [
-        'name' => 'files_upload',
+        'name' => 'files',
         'id'   => 'uuid',
     ],
     'policy' => \Feugene\Files\Policies\FilePolicy::class,

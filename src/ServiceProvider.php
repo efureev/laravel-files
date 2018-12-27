@@ -23,8 +23,7 @@ class ServiceProvider extends BaseServiceProvider
 
     public function boot(): void
     {
-        $this->app->config->set('files', require self::path('config/files.php'));
-
+        $this->mergeConfigFrom(self::path('config/files.php'), 'files');
 
         $this->loadMigrationsFrom(self::path('database/migrations'));
 

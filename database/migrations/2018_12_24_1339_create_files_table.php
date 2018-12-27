@@ -18,8 +18,28 @@ class CreateFilesTable extends Migration
                 throw new \TypeError('id type must have be: \'integer\', \'string\', \'uuid\',\'unsignedBigInteger\',\'unsignedInteger\'');
             }
 
-            $table->addColumn(config('files.table.id'), 'id')->primary();
-            $table->addColumn(config('files.table.id'), 'parent_id')->nullable()->index();
+            switch ($typeId) {
+                case 'uuid':
+                    $table->uuid('id')->primary();
+                    $table->uuid('parent_id')->nullable()->index();
+                    break;
+                case 'string':
+                    $table->string('id')->primary();
+                    $table->string('parent_id')->nullable()->index();
+                    break;
+                case 'integer':
+                    $table->integer('id', true)->primary();
+                    $table->integer('parent_id')->nullable()->index();
+                    break;
+                case 'unsignedInteger':
+                    $table->unsignedInteger('id', true)->primary();
+                    $table->unsignedInteger('parent_id')->nullable()->index();
+                    break;
+                case 'unsignedBigInteger':
+                    $table->unsignedBigInteger('id', true)->primary();
+                    $table->unsignedBigInteger('parent_id')->nullable()->index();
+                    break;
+            }
 
             $table->string('path', 2048)->nullable();
             $table->string('ext', 15)->nullable();
