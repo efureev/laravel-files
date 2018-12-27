@@ -3,8 +3,8 @@
 namespace Feugene\Files\Tests\Unit;
 
 use Feugene\Files\Contracts\UploadService;
-use Feugene\Files\Services\AfterModelAction;
-use Feugene\Files\Services\BeforeBaseAction;
+use Feugene\Files\Services\Actions\AfterModelAction;
+use Feugene\Files\Services\Actions\BeforeBaseAction;
 use Feugene\Files\Support\Store;
 use Feugene\Files\Types\BaseFile;
 

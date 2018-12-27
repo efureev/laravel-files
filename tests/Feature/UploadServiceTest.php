@@ -4,8 +4,8 @@ namespace Feugene\Files\Tests\Feature;
 
 use Feugene\Files\Contracts\UploadService;
 use Feugene\Files\Models\File;
-use Feugene\Files\Services\AfterModelAction;
-use Feugene\Files\Services\BeforeBaseAction;
+use Feugene\Files\Services\Actions\AfterModelAction;
+use Feugene\Files\Services\Actions\BeforeBaseAction;
 use Feugene\Files\Tests\AbstractTestCase;
 use Feugene\Files\Types\BaseFile;
 use Illuminate\Http\UploadedFile;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feugene\Files\Services;
+namespace Feugene\Files\Services\Actions;
 
 use Feugene\Files\Contracts\AfterUploadAction;
 use Feugene\Files\Models\File;
