@@ -5,7 +5,7 @@ namespace Feugene\Files\Http\Controllers;
 use Feugene\Files\Contracts\UploadService;
 use Feugene\Files\Http\AuthorizeTrait;
 use Feugene\Files\Models\File;
-use Feugene\Files\Services\AfterModelAction;
+use Feugene\Files\Services\Actions\AfterModelAction;
 use Illuminate\Routing\Controller as BaseController;
 
 /**

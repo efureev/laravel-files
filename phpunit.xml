@@ -30,6 +30,6 @@
         <env name="DB_DATABASE" value="test"/>
         <env name="DB_CONNECTION" value="pgsql"/>
         <env name="DB_USERNAME" value="efureev"/>
-        <env name="DB_PORT" value="15432"/>
+        <!--<env name="DB_PORT" value="15432"/>-->
     </php>
 </phpunit>

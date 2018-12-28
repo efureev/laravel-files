@@ -53,9 +53,9 @@ trait VerifyTrait
     /**
      * @param string|array $types
      *
-     * @return \Feugene\Files\Http\VerifyTrait
+     * @return $this
      */
-    public function setDisallowFileTypes($types): self
+    public function setDisallowFileTypes($types)
     {
         if (is_string($types)) {
             $types = [$types];

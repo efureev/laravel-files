@@ -47,8 +47,8 @@ class BaseFile extends File
     }
 
     /**
-     * @param string $directory
-     * @param null   $name
+     * @param string      $directory
+     * @param string|null $name
      *
      * @return self
      */

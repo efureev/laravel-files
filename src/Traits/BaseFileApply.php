@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
  * Trait BaseFileApply
  *
  * @package Feugene\Files\Traits
+ * @mixin \Feugene\Files\Models\File
  */
 trait BaseFileApply
 {
@@ -24,7 +25,7 @@ trait BaseFileApply
      */
     public function getAbsolutePath(): string
     {
-        return $this->getBaseFile()->getRealPath();
+        return (string)$this->getBaseFile()->getRealPath();
     }
 
     /**
@@ -33,11 +34,11 @@ trait BaseFileApply
     public function getRelativePath(): string
     {
         $prefix = $this->pathToModelStorage();
-        if (starts_with($this->getBaseFile()->getRealPath(), $prefix)) {
-            return preg_replace('#^' . preg_quote($prefix) . '/*#', '', $this->getBaseFile()->getRealPath());
+        if (starts_with((string)$this->getBaseFile()->getRealPath(), $prefix)) {
+            return preg_replace('#^' . preg_quote($prefix) . '/*#', '', (string)$this->getBaseFile()->getRealPath());
         }
 
-        return $this->getBaseFile()->getRealPath();
+        return (string)$this->getBaseFile()->getRealPath();
     }
 
 
@@ -48,7 +49,7 @@ trait BaseFileApply
      */
     public function pathToModelStorage(string $path = ''): string
     {
-        return realpath(Storage::disk($this->getDriver())->path($path));
+        return (string)realpath(Storage::disk($this->getDriver())->path($path));
     }
 
 
@@ -66,6 +67,14 @@ trait BaseFileApply
     public function getBaseFile()
     {
         return $this->baseFile;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasBaseFile(): bool
+    {
+        return $this->baseFile !== null;
     }
 
     /**
@@ -130,7 +139,7 @@ trait BaseFileApply
     /**
      * @param string $path
      *
-     * @return \Feugene\Files\Traits\BaseFileApply
+     * @return \Feugene\Files\Models\File
      */
     public static function fromAbsolutePath(string $path)
     {

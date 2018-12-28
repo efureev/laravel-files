@@ -21,7 +21,7 @@ class FileObserver
      */
     public function deleted(File $file)
     {
-        if ($file->getBaseFile()) {
+        if ($file->hasBaseFile()) {
             $file->getBaseFile()->remove();
         }
     }

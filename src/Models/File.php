@@ -2,8 +2,8 @@
 
 namespace Feugene\Files\Models;
 
-use Feugene\Files\Exceptions\MissingFilePathException;
 use Feugene\Files\Entities\FileParams;
+use Feugene\Files\Exceptions\MissingFilePathException;
 use Feugene\Files\Traits\BaseFileApply;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,11 +14,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Ramsey\Uuid\Uuid|int $id
  * @property \Ramsey\Uuid\Uuid|int $parent_id
  * @property string                $path
- * @property string                $ext
- * @property string                $size
- * @property string                $mime
+ * @property string|null           $ext
+ * @property int                   $size
+ * @property string|null           $mime
  * @property string                $driver
- * @property FileParams            $params
+ * @property FileParams|null       $params
  * @mixin  \Illuminate\Database\Eloquent\Builder
  */
 class File extends Model
@@ -56,7 +56,7 @@ class File extends Model
 
 
     /**
-     * @param $value
+     * @param string $value
      *
      * @throws \Feugene\Files\Exceptions\MissingFilePathException
      */

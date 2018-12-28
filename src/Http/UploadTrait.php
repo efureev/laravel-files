@@ -8,6 +8,11 @@ use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Trait UploadTrait
+ *
+ * @package Feugene\Files\Http
+ */
 trait UploadTrait
 {
     /**
@@ -21,7 +26,7 @@ trait UploadTrait
     protected $driver = 'local';
 
     /**
-     * @var null|array
+     * @var null|array|\Illuminate\Http\UploadedFile
      */
     protected $uploadFiles;
 
@@ -74,7 +79,7 @@ trait UploadTrait
     protected function getUploadFolder(): string
     {
         if ($this->path === null) {
-            $this->path = request('path', '');
+            $this->path = (string)request('path', '');
         }
 
         return $this->path;
@@ -83,9 +88,9 @@ trait UploadTrait
     /**
      * @param string $path
      *
-     * @return \Feugene\Files\Http\UploadTrait
+     * @return $this
      */
-    public function setPath(string $path): self
+    public function setPath(string $path)
     {
         $this->path = $path;
 
@@ -105,15 +110,15 @@ trait UploadTrait
      */
     public function getDriver(): string
     {
-        return request('driver', $this->driver);
+        return (string)request('driver', $this->driver);
     }
 
     /**
      * @param string $name
      *
-     * @return \Feugene\Files\Http\UploadTrait
+     * @return $this
      */
-    public function setDriver(string $name): self
+    public function setDriver(string $name)
     {
         $this->driver = $name;
 
@@ -129,7 +134,7 @@ trait UploadTrait
     protected function getFileName(UploadedFile $uploadFile): string
     {
         if (!$this->uniqueFileName) {
-            return $uploadFile->getClientOriginalName();
+            return (string)$uploadFile->getClientOriginalName();
         }
 
         return Uuid::uuid4()->toString() . '.' . $uploadFile->getClientOriginalExtension();
@@ -152,7 +157,7 @@ trait UploadTrait
 
         $file = $uploadFile->move($uploadFolder, $fileName);
 
-        return new BaseFile($file->getRealPath());
+        return new BaseFile((string)$file->getRealPath());
     }
 
     /**
