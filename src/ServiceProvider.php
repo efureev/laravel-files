@@ -4,7 +4,6 @@ namespace Feugene\Files;
 
 use Feugene\Files\Contracts\UploadService;
 use Feugene\Files\Models\File;
-use Feugene\Files\Observers\FileObserver;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
@@ -30,8 +29,6 @@ class ServiceProvider extends BaseServiceProvider
         if ($this->app->environment() !== 'production') {
             $this->app->make(Factory::class)->load(self::path('database/factories'));
         }
-
-        File::observe(FileObserver::class);
 
         $this->registerPolicies();
     }

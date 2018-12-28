@@ -4,7 +4,9 @@ namespace Feugene\Files\Models;
 
 use Feugene\Files\Entities\FileParams;
 use Feugene\Files\Exceptions\MissingFilePathException;
+use Feugene\Files\Observers\FileObserver;
 use Feugene\Files\Traits\BaseFileApply;
+use Feugene\Files\Traits\FileTypes;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,18 +20,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property int                   $size
  * @property string|null           $mime
  * @property string                $driver
+ * @property string                $key
  * @property FileParams|null       $params
  * @mixin  \Illuminate\Database\Eloquent\Builder
  */
 class File extends Model
 {
-    use BaseFileApply;
+    use BaseFileApply, FileTypes;
 
     protected $keyType = 'uuid';
 
-
     protected $hidden = [
         'parent',
+        'created_at',
+        'updated_at',
     ];
 
     protected $fillable = [
@@ -38,6 +42,7 @@ class File extends Model
         'ext',
         'size',
         'mime',
+        'key',
         'params',
     ];
 
@@ -54,6 +59,11 @@ class File extends Model
         parent::__construct($attributes);
     }
 
+    public static function boot()
+    {
+        parent::boot();
+        self::observe(FileObserver::class);
+    }
 
     /**
      * @param string $value
@@ -77,10 +87,18 @@ class File extends Model
      */
     public function getParamsAttribute()
     {
+        if (!isset($this->attributes['params'])) {
+            return $this->attributes['params'] = new FileParams;
+        }
+
         if ($this->attributes['params'] instanceof FileParams) {
             return $this->attributes['params'];
         }
 
-        return $this->attributes['params'] = FileParams::fromJson($this->attributes['params'] ?? '');
+        if (is_array($this->attributes['params'])) {
+            return $this->attributes['params'] = (new FileParams)->fromArray($this->attributes['params']);
+        }
+
+        return $this->attributes['params'] = FileParams::fromJson($this->attributes['params']);
     }
 }

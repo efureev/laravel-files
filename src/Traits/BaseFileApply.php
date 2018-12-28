@@ -78,14 +78,6 @@ trait BaseFileApply
     }
 
     /**
-     *
-     */
-    /*public function initBaseFile(): void
-    {
-        $this->baseFile = new BaseFile($this->getAbsolutePath());
-    }*/
-
-    /**
      * @param \Feugene\Files\Types\BaseFile $file
      * @param bool                          $updateModel
      *
@@ -127,13 +119,13 @@ trait BaseFileApply
         $this->attributes['path'] = $this->getRelativePath();
 
         $this->ext = $this->getBaseFile()->getExtension();
+        $this->driver = $this->getDriver();
 
         if ($this->getBaseFile()->isExists()) {
             clearstatcache();
             $this->size = $this->getBaseFile()->getSize();
             $this->mime = $this->getBaseFile()->getMimeType();
         }
-
     }
 
     /**

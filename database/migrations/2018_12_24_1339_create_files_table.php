@@ -46,6 +46,7 @@ class CreateFilesTable extends Migration
             $table->string('driver')->nullable()->index();
             $table->unsignedBigInteger('size')->nullable();
             $table->string('mime')->nullable();
+            $table->string('key', 191)->nullable()->index();
             $table->jsonb('params')->nullable();
             $table->timestamps();
         });

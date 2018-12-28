@@ -5,9 +5,9 @@ namespace Feugene\Files\Tests\Unit;
 use Feugene\Files\Support\Store;
 
 /**
- * Class BaseFileTest
+ * Class StoreTest
  *
- * @package Feugene\Files\Tests\Unit\Models
+ * @package Feugene\Files\Tests\Unit
  */
 class StoreTest extends AbstractUnitTestCase
 {
