@@ -6,6 +6,7 @@ use Feugene\Files\Entities\FileParams;
 use Feugene\Files\Models\File;
 use Feugene\Files\Support\Store;
 use Feugene\Files\Traits\BaseFileApply;
+use Feugene\Files\Types\BaseFile;
 
 /**
  * Class FileTest
@@ -84,6 +85,10 @@ class FileTest extends AbstractModelTestCase
         $file = File::find($this->model->getKey());
 
         static::assertInstanceOf(File::class, $file);
+        static::assertInstanceOf(BaseFile::class, $file->getBaseFile());
+        static::assertEquals($file->size, $file->getBaseFile()->getSize());
+        static::assertEquals($file->mime, $file->getBaseFile()->getMimeType());
+        static::assertEquals(basename($file->path), $file->getBaseFile()->getBasename());
     }
 
     public function testLoadFromDatabaseWithParams(): void

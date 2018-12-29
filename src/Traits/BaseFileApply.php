@@ -66,8 +66,15 @@ trait BaseFileApply
      */
     public function getBaseFile()
     {
+        if (!$this->baseFile) {
+            if ($this->exists && !empty($this->path)) {
+                $this->setBaseFileFromString($this->path, false);
+            }
+        }
+
         return $this->baseFile;
     }
+
 
     /**
      * @return bool
