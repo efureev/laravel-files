@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Storage;
  * Trait BaseFileApply
  *
  * @package Feugene\Files\Traits
- * @mixin \Feugene\Files\Models\File
  */
 trait BaseFileApply
 {
@@ -64,12 +63,10 @@ trait BaseFileApply
     /**
      * @return \Feugene\Files\Types\BaseFile
      */
-    public function getBaseFile()
+    public function getBaseFile(): BaseFile
     {
-        if (!$this->baseFile) {
-            if ($this->exists && !empty($this->path)) {
-                $this->setBaseFileFromString($this->path, false);
-            }
+        if (!$this->baseFile && $this->exists && !empty($this->path)) {
+            $this->setBaseFileFromString($this->path, false);
         }
 
         return $this->baseFile;
@@ -90,7 +87,7 @@ trait BaseFileApply
      *
      * @return $this
      */
-    public function setBaseFile(BaseFile $file, bool $updateModel = true)
+    public function setBaseFile(BaseFile $file, bool $updateModel = true): self
     {
         $this->baseFile = $file;
 
@@ -107,7 +104,7 @@ trait BaseFileApply
      *
      * @return $this
      */
-    protected function setBaseFileFromString(string $path, bool $updateModel = true)
+    protected function setBaseFileFromString(string $path, bool $updateModel = true): self
     {
         if (!Store::isAbsolutePath($path)) {
             $path = $this->pathToModelStorage($path);
@@ -138,9 +135,9 @@ trait BaseFileApply
     /**
      * @param string $path
      *
-     * @return \Feugene\Files\Models\File
+     * @return $this
      */
-    public static function fromAbsolutePath(string $path)
+    public static function fromAbsolutePath(string $path): self
     {
         return (new static)->setBaseFile(new BaseFile($path));
     }

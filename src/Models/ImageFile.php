@@ -2,7 +2,9 @@
 
 namespace Feugene\Files\Models;
 
+use Feugene\Files\Entities\AbstractModificator;
 use Feugene\Files\Traits\Dimensions;
+use Feugene\Files\Traits\Resize;
 
 /**
  * Class ImageFile
@@ -12,14 +14,14 @@ use Feugene\Files\Traits\Dimensions;
  * @property int    $width
  * @property string $innerMime
  */
-class ImageFile extends File
+class ImageFile extends AbstractRelationFile
 {
-    use Dimensions;
+    use Dimensions, Resize;
 
     /**
      * @param int|null $value
      */
-    public function setWidthAttribute(?int $value)
+    public function setWidthAttribute(?int $value): void
     {
         $this->params->width = $value;
     }
@@ -27,7 +29,7 @@ class ImageFile extends File
     /**
      * @return int
      */
-    public function getWidthAttribute()
+    public function getWidthAttribute(): int
     {
         return $this->params->width;
     }
@@ -35,7 +37,7 @@ class ImageFile extends File
     /**
      * @param int|null $value
      */
-    public function setHeightAttribute(?int $value)
+    public function setHeightAttribute(?int $value): void
     {
         $this->params->height = $value;
     }
@@ -43,7 +45,7 @@ class ImageFile extends File
     /**
      * @return int
      */
-    public function getHeightAttribute()
+    public function getHeightAttribute(): int
     {
         return $this->params->height;
     }
@@ -51,17 +53,31 @@ class ImageFile extends File
     /**
      * @param string|null $value
      */
-    public function setInnerMimeAttribute(?string $value)
+    public function setInnerMimeAttribute(?string $value): void
     {
         $this->params->innerMime = $value;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInnerMimeAttribute()
+    public function getInnerMimeAttribute(): string
     {
         return $this->params->innerMime;
+    }
+
+    /**
+     * @param \Feugene\Files\Entities\AbstractModificator ...$options
+     *
+     * @return \Feugene\Files\Models\AbstractRelationFile
+     * @throws \Gumlet\ImageResizeException
+     */
+    public function createChild(AbstractModificator ... $options): AbstractRelationFile
+    {
+        $instance = $this->modify(...$options);
+        $instance->save();
+
+        return $instance;
     }
 
 }

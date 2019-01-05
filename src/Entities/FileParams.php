@@ -12,7 +12,7 @@ use Php\Support\Interfaces\Jsonable;
 /**
  * Class FileParams
  *
- * @package Feugene\Files\Support
+ * @package Feugene\Files\Entities
  */
 class FileParams implements
     \ArrayAccess,
