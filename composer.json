@@ -17,6 +17,7 @@
     "ramsey/uuid": "^3.8",
     "symfony/http-foundation": "~4",
     "efureev/support": "^1.2",
+    "gumlet/php-image-resize": "^1.9",
     "ext-gd": "*",
     "ext-fileinfo": "*"
   },
