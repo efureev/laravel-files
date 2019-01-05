@@ -24,6 +24,8 @@ Add-on file model for Laravel models. Implements work with native files.
 
 - Run `php artisan migrate` for add table for file 
 
+### File upload
+
 Only simple upload:
 ```php
 public function store()
@@ -89,5 +91,52 @@ public function store(int $sectionId)
         'files'   => $list,
     ];
 }
+```
+
+
+### Relations and image operations 
+
+```php
+
+// find image type from DB
+/** @var ImageFile $file */
+$file = ImageFile::find($id);
+
+// create child relation with clone image     
+$child = $file->createChild();
+
+// Image scale to 50% from original
+// without relation
+$child = $file->scale(new ScaleModificator(50));
+// create child relation 
+$child = $file->createChild(new ScaleModificator(50));
+
+// Image resize to 50px by width
+// without relation
+$child = $file->resize(new ResizeModificator(50));
+// create child relation 
+$child = $file->createChild(new ResizeModificator(50));
+
+
+// Image resize to 50px by height
+// without relation
+$child = $file->resize(new ResizeModificator(null, 50));
+// create child relation 
+$child = $file->createChild(new ResizeModificator(null, 50));
+
+
+// Image resize to 50px by height and 100px by width and bestFit options
+// without relation
+$child = $file->resize(new ResizeModificator(100, 50));
+// create child relation 
+$child = $file->createChild(new ResizeModificator(100, 50));
+
+
+// Image resize to 50px by height and 100px by width and important size (100x50)
+// without relation
+$child = $file->resize(new ResizeModificator(100, 50, false));
+$child = $file->resize(new ResizeModificator(100, 50, false), true);  // if original image is smaller than target image
+// create child relation 
+$child = $file->createChild(new ResizeModificator(100, 50, false));
 ```
 

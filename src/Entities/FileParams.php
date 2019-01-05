@@ -167,7 +167,7 @@ class FileParams implements
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             throw new InvalidParamException('$offset must have not be null');
         } else {
             $this->_items[ $offset ] = $value;

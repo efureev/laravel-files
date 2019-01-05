@@ -3,6 +3,7 @@
 namespace Feugene\Files\Traits;
 
 use Feugene\Files\Entities\AbstractModificator;
+use Feugene\Files\Entities\Modificators\ResizeModificator;
 use Feugene\Files\Entities\Modificators\ScaleModificator;
 use Feugene\Files\Models\ImageFile;
 use Gumlet\ImageResize;
@@ -42,15 +43,38 @@ trait Resize
         $extPostfix = '.' . $this->getBaseFile()->getExtension();
         $newName = dirname($this->getAbsolutePath()) . '/' . $this->getBaseFile()->getBasename($extPostfix) . '_scale_' . $mod->getValueString() . $extPostfix;
 
-        $this->getImageProcessor()
-            ->scale($mod->getValue())
-            ->save($newName);
+        $mod->handle($this);
+        $this->getImageProcessor()->save($newName);
 
         /** @var \Feugene\Files\Models\ImageFile $file */
         $file = ImageFile::fromAbsolutePath($newName);
 
-        $file->setParent($this);
-        $file->key = 'scale:' . $mod->getValueString();
+        $file->key = $file->width . 'x' . $file->height;
+
+        $file->save();
+
+        return $file;
+    }
+
+    /**
+     * @param \Feugene\Files\Entities\Modificators\ResizeModificator $mod
+     * @param mixed                                                  ...$options
+     *
+     * @return \Feugene\Files\Models\ImageFile
+     * @throws \Gumlet\ImageResizeException
+     */
+    public function resize(ResizeModificator $mod, ... $options): ImageFile
+    {
+        $extPostfix = '.' . $this->getBaseFile()->getExtension();
+        $newName = dirname($this->getAbsolutePath()) . '/' . $this->getBaseFile()->getBasename($extPostfix) . '_resize_' . $mod->getValueString() . $extPostfix;
+
+        $mod->handle($this, ...$options);
+        $this->getImageProcessor()->save($newName);
+
+        /** @var \Feugene\Files\Models\ImageFile $file */
+        $file = ImageFile::fromAbsolutePath($newName);
+
+        $file->key = $mod->getValueString();
 
         $file->save();
 
@@ -70,8 +94,8 @@ trait Resize
 
         $keys = [];
         foreach ($options as $option) {
-            $keys[] = (string)$option;
             $option->handle($this);
+            $keys[] = ((int)floor($this->getImageProcessor()->getDestWidth())) . 'x' . ((int)floor($this->getImageProcessor()->getDestHeight()));
         }
 
         $this->getImageProcessor()->save($newName);
@@ -79,61 +103,11 @@ trait Resize
         /** @var \Feugene\Files\Models\ImageFile $file */
         $file = ImageFile::fromAbsolutePath($newName);
 
-        $file->key = implode('|', $keys);
-        $file->setParent($this);
+        if ($keys) {
+            $file->key = implode('|', $keys);
+        }
 
         return $file;
     }
-
-    /**
-     * @param \Feugene\Files\Entities\ImageFileOptions $options
-     *
-     * @return \Feugene\Files\Models\ImageFile
-     * @throws \Gumlet\ImageResizeException
-     */
-//    public function resize(ImageFileOptions $options): ImageFile
-//    {
-//        $image = new ImageResize($this->getAbsolutePath());
-//        $image->resize($options->width, $options->height);
-//        dd($this->getAbsolutePath(), $image);
-    /*
-            $image = Image::make($this->getPath());
-
-            if ($size['static']) {
-                $image->fit($size['width'], $size['height'], null);
-            } else {
-                $image->resize($size['width'], $size['height'], function ($constraint) use ($size): void {
-                    $constraint->aspectRatio();
-
-                    if (empty($size['enlarge'])) {
-                        $constraint->upsize();
-                    }
-                });
-            }
-
-            return $image->save(null, config('upload.images.quality', null));*/
-//    }
-    /*
-        protected function resizeImage($size)
-        {
-            $image = new ImageResize($this->getAbsolutePath());
-
-
-            $image = Image::make($this->getPath());
-
-            if ($size['static']) {
-                $image->fit($size['width'], $size['height'], null);
-            } else {
-                $image->resize($size['width'], $size['height'], function ($constraint) use ($size): void {
-                    $constraint->aspectRatio();
-
-                    if (empty($size['enlarge'])) {
-                        $constraint->upsize();
-                    }
-                });
-            }
-
-            return $image->save(null, config('upload.images.quality', null));
-        }*/
 
 }

@@ -75,6 +75,7 @@ class ImageFile extends AbstractRelationFile
     public function createChild(AbstractModificator ... $options): AbstractRelationFile
     {
         $instance = $this->modify(...$options);
+        $instance->setParent($this);
         $instance->save();
 
         return $instance;

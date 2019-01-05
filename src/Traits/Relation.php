@@ -8,6 +8,7 @@ use Feugene\Files\Models\AbstractRelationFile;
  * Trait Relation
  *
  * @package Feugene\Files\Traits
+ * @property $this parent
  */
 trait Relation
 {
@@ -46,7 +47,7 @@ trait Relation
     public function delete()
     {
         $this->children()->each(function ($file): void {
-            /** @var \Feugene\Files\Models\File $file */
+            /** @var AbstractRelationFile $file */
             $file->delete();
         });
 
