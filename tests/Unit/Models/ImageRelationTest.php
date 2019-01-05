@@ -2,7 +2,6 @@
 
 namespace Feugene\Files\Tests\Unit\Models;
 
-use Feugene\Files\Entities\ImageFileOptions;
 use Feugene\Files\Entities\Modificators\ResizeModificator;
 use Feugene\Files\Entities\Modificators\ScaleModificator;
 use Feugene\Files\Models\File;
