@@ -24,7 +24,7 @@ before_script:
 
 script:
   - locale
-  - php -r 'echo setlocale(LC_CTYPE,0);'
+  - php -r 'echo setlocale(LC_ALL,0);'
   - ./vendor/bin/phpunit --coverage-text --coverage-clover=clover.xml
 
 after_script:
