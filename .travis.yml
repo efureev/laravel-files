@@ -37,4 +37,4 @@ after_success:
 
 cache:
   directories:
-    - $HOME/.composer
+    - $HOME/.composer/cache/files
