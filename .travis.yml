@@ -23,6 +23,7 @@ before_script:
   - composer install
 
 script:
+  - php -r 'echo setlocale(LC_CTYPE,0);'
   - ./vendor/bin/phpunit --coverage-text --coverage-clover=clover.xml
 
 after_script:
