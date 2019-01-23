@@ -48,7 +48,40 @@ class UploadServiceTest extends AbstractTestCase
         $file = UploadedFile::fake()->create('тест.pdf', 3200);
         $service->setUploadedFiles($file);
         $list = $service->upload();
-        
+
+        static::assertInstanceOf(\Illuminate\Support\Collection::class, $list);
+        static::assertInstanceOf(BaseFile::class, $list->first());
+        static::assertCount(1, $list);
+    }
+
+    public function testSimpleUpload_cyrillic_UpperCase(): void
+    {
+        /** @var \Feugene\Files\Services\UploadService $service */
+        $service = app(UploadService::class);
+
+        $file = UploadedFile::fake()->create('Тест.pdf', 200);
+        $service->setUploadedFiles($file);
+        $service->uniqueFileName = false;
+        $list = $service->setPath('storage/test')->upload();
+
+        static::assertInstanceOf(\Illuminate\Support\Collection::class, $list);
+        static::assertInstanceOf(BaseFile::class, $list->first());
+        static::assertCount(1, $list);
+
+        $file = UploadedFile::fake()->create('Тест.pdf', 3200);
+        $service->setUploadedFiles($file);
+        $list = $service->upload();
+
+        static::assertInstanceOf(\Illuminate\Support\Collection::class, $list);
+        static::assertInstanceOf(BaseFile::class, $list->first());
+        static::assertCount(1, $list);
+
+
+
+        $file = UploadedFile::fake()->create('Тест.pdf', 2100);
+        $service->setUploadedFiles($file);
+        $list = $service->upload();
+
         static::assertInstanceOf(\Illuminate\Support\Collection::class, $list);
         static::assertInstanceOf(BaseFile::class, $list->first());
         static::assertCount(1, $list);
